@@ -56,6 +56,6 @@ jobs:
     # build and push Docker image
     - run: |
         TAG=0.1.$CIRCLE_BUILD_NUM
-        docker build -t   CircleCI-Public/circleci-demo-docker:$TAG .
+        docker build -t taskr-public/taskr:$TAG .
         docker login -u $DOCKER_USER -p $DOCKER_PASS
-        docker push taskr/taskr-docker:$TAG
+        docker push taskr-public/taskr:$TAG
