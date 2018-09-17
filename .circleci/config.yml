@@ -39,9 +39,9 @@ jobs:
         key: v1-dependencies-{{ checksum "build.gradle" }}
 
     # run tests!
-    - run:
-        gradle test
-        gradle build
+    - run: gradle test
+
+    - run: gradle build
 
     - setup_remote_docker:
         docker_layer_caching: true
