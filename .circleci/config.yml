@@ -49,10 +49,10 @@ jobs:
     - checkout
     - run: export TERM=${TERM:-dumb} && ./gradlew build
     - run: echo ${GCLOUD_SERVICE_KEY} > ${HOME}/gcp-key.json
-    - run: docker build --rm=false -t gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:${CIRCLE_SHA1} .
+    - run: docker build --rm=false -t asia.gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:${CIRCLE_SHA1} .
     - run: gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
     - run: gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-    - run: gcloud docker -- push gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:${CIRCLE_SHA1}
+    - run: gcloud docker -- push asia.gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:${CIRCLE_SHA1}
 
 workflows:
   version: 2
