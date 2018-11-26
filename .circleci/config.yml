@@ -44,15 +44,23 @@ jobs:
     - run: gradle build
 
   push-image:
-    machine: true
-    steps:
-    - checkout
-    - run: export TERM=${TERM:-dumb} && ./gradlew build
-    - run: echo ${GCLOUD_SERVICE_KEY} > ${HOME}/gcp-key.json
-    - run: docker build --rm=false -t asia.gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:${CIRCLE_SHA1} .
-    - run: gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
-    - run: gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-    - run: gcloud docker -- push asia.gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:${CIRCLE_SHA1}
+  - setup_remote_docker:
+      docker_layer_caching: true
+
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            sudo mv /tmp/docker/* /usr/bin
+      # build and push Docker image
+      - run: |
+          TAG=0.1.$CIRCLE_BUILD_NUM
+          docker build -t adityachitre/taskr:$TAG .
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push adityachitre/taskr:$TAG
 
 workflows:
   version: 2
