@@ -131,7 +131,6 @@ workflows:
     - deploy-to-staging:
         requires:
         - push_image
-        context: k8s
         filters:
           branches:
             only: master
