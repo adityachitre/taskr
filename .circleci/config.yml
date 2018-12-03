@@ -116,7 +116,7 @@ jobs:
           gcloud auth activate-service-account --key-file key.json
           gcloud config set compute/zone australia-southeast1-a
           gcloud config set project taskr
-          gcloud container clusters get-credentials test-cluster
+          gcloud container clusters get-credentials test-cluster --zone australia-southeast1-a
           kubectl apply -f k8s-deployment.yml
           kubectl rollout status deployment/taskr-deployment
 
