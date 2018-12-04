@@ -115,9 +115,12 @@ jobs:
         name: Get build number
         command: |
           export CIRCLE_BUILD_NUM_DOCKER="$(cat /tmp/workspace/docker-build_number.txt)"
+          echo $CIRCLE_BUILD_NUM_DOCKER
     - run:
         name: Template k8s config
-        command: for i in /tmp/workspace/k8s-*.yml; do envsubst < "$i" > $(basename "$i"); done
+        command: |
+          export CIRCLE_BUILD_NUM_DOCKER="$(cat /tmp/workspace/docker-build_number.txt)"
+          for i in /tmp/workspace/k8s-*.yml; do envsubst < "$i" > $(basename "$i"); done
     - run:
         name: Deploy to staging
         command: |
