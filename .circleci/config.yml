@@ -108,7 +108,7 @@ jobs:
     - run:
         name: Define build number
         command: |
-          echo 'export CIRCLE_BUILD_NUM_DOCKER=${cat /tmp/workspace/docker-build_number.txt)' >> $BASH_ENV
+          echo 'export CIRCLE_BUILD_NUM_DOCKER=$(cat /tmp/workspace/docker-build_number.txt)' >> $BASH_ENV
           source $BASH_ENV
     - run:
         name: Install dependencies
