@@ -106,6 +106,11 @@ jobs:
     - attach_workspace:
         at: /tmp/workspace
     - run:
+        name: Retrieve and set build number into environment variables
+        command: |
+          echo 'export CIRCLE_BUILD_NUM_DOCKER=$(cat /tmp/workspace/docker-build_number.txt)' >> $BASH_ENV
+          source $BASH_ENV
+    - run:
         name: Install dependencies
         command: apk add --update --no-cache libintl gettext openjdk7-jre
     - run:
@@ -113,8 +118,6 @@ jobs:
         command: gcloud components install app-engine-java kubectl
     - run:
         name: Template k8s config
-        environment:
-          CIRCLE_BUILD_NUM_DOCKER: "$(cat /tmp/workspace/docker-build_number.txt)"
         command: |
           for i in /tmp/workspace/k8s-*.yml; do envsubst < "$i" > $(basename "$i"); done
     - run:
